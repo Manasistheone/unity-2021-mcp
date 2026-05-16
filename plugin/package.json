@@ -1,0 +1,13 @@
+{
+    "name": "com.coplay.unity-2021-mcp",
+    "version": "0.1.0",
+    "displayName": "MCP for Unity 2021",
+    "description": "MCP (Model Context Protocol) server plugin for Unity 2021.3 LTS",
+    "unity": "2021.3",
+    "dependencies": {
+        
+    },
+    "author": {
+        "name": "CoPlay"
+    }
+}

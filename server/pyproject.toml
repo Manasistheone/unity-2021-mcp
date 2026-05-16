@@ -1,0 +1,75 @@
+[project]
+name = "unity-2021-mcp-server"
+version = "0.1.0"
+description = "MCP for Unity 2021 Server: A standalone MCP server for Unity 2021.3 LTS Editor integration via the Model Context Protocol."
+readme = "README.md"
+license = "MIT"
+authors = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Games/Entertainment",
+]
+keywords = ["mcp", "unity", "unity2021", "ai", "model context protocol", "gamedev"]
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=3.0.0,<4",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23",
+    "hypothesis>=6.0.0",
+]
+
+[project.urls]
+Repository = "https://github.com/CoplayDev/unity-mcp.git"
+
+[project.scripts]
+mcp-for-unity-2021 = "unity_2021_mcp.main:main"
+
+[build-system]
+requires = ["setuptools>=64.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == \"__main__\":",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+precision = 2
+show_missing = true
