@@ -376,4 +376,4 @@ The tool name in Python must match the `Name` in the C# `[McpForUnityTool]` attr
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](https://github.com/Manasistheone/unity-2021-mcp/blob/main/LICENSE) for details.
