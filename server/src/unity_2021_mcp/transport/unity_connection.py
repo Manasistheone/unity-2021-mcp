@@ -128,12 +128,19 @@ class UnityConnection:
         if not lock_dir.exists():
             return None
 
-        for lock_file in lock_dir.glob("unity-mcp-port-*.json"):
+        # Find the most recently modified lock file (most likely the active Unity instance)
+        lock_files = list(lock_dir.glob("unity-mcp-port-*.json"))
+        if not lock_files:
+            return None
+
+        lock_files.sort(key=lambda f: f.stat().st_mtime, reverse=True)
+
+        for lock_file in lock_files:
             try:
                 data = json.loads(lock_file.read_text())
                 port = data.get("port")
                 if port and isinstance(port, int):
-                    logger.debug(f"Discovered Unity port {port} from lock file")
+                    logger.debug(f"Discovered Unity port {port} from lock file {lock_file.name}")
                     return data
             except (json.JSONDecodeError, OSError):
                 continue
