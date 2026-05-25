@@ -199,14 +199,18 @@ def create_server(unity_host: str = "127.0.0.1", unity_port: int = 8765, timeout
         gameobject: str = "",
         component_type: str = "",
         properties: dict[str, Any] | None = None,
+        include_fields: bool = True,
+        include_properties: bool = True,
     ) -> dict[str, Any]:
-        """Add, remove, and configure components on GameObjects.
+        """Add, remove, get, list, and modify components on GameObjects.
 
         Args:
             action: The action: add, remove, get, list, modify.
             gameobject: Name or path of the target GameObject.
-            component_type: Full type name of the component.
-            properties: Component property values to set.
+            component_type: Full or short type name of the component.
+            properties: Component property values to set (for modify action).
+            include_fields: Whether to include serialized fields in get output (default true).
+            include_properties: Whether to include public properties in get output (default true).
         """
         params = {"action": action}
         if gameobject:
@@ -215,6 +219,8 @@ def create_server(unity_host: str = "127.0.0.1", unity_port: int = 8765, timeout
             params["component_type"] = component_type
         if properties:
             params["properties"] = properties
+        params["include_fields"] = include_fields
+        params["include_properties"] = include_properties
         return await _relay_to_unity("manage_components", params)
 
     @mcp.tool()
@@ -372,6 +378,23 @@ def create_server(unity_host: str = "127.0.0.1", unity_port: int = 8765, timeout
             menu_path: Full menu path (e.g., 'File/Save Project', 'GameObject/Create Empty').
         """
         return await _relay_to_unity("execute_menu_item", {"menu_path": menu_path})
+
+    @mcp.tool()
+    async def get_selection(
+        include_components: bool = True,
+        include_children: bool = False,
+    ) -> dict[str, Any]:
+        """Get the currently selected objects in Unity (hierarchy or project window).
+
+        Args:
+            include_components: Whether to include component details on selected GameObjects.
+            include_children: Whether to include direct children names.
+        """
+        params = {
+            "include_components": include_components,
+            "include_children": include_children,
+        }
+        return await _relay_to_unity("get_selection", params)
 
     @mcp.tool()
     async def batch_execute(commands: list[dict[str, Any]]) -> dict[str, Any]:
